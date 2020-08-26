@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Line, Station, Time
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 import json
 from django.http import JsonResponse
 from django.db.models.fields import DateTimeField
@@ -31,6 +32,7 @@ def to_dict(self, fields=None, exclude=None):
     return data
 
 
+@csrf_exempt
 @require_http_methods(['GET'])
 def search_time(request):
     response = {'code': 20000, 'message': 'success', 'data': []}
@@ -57,6 +59,8 @@ def search_time(request):
     return JsonResponse(response, safe=False)
 
 
+@csrf_exempt
+@require_http_methods(['GET'])
 def judge_question(request):
     response = {'code': 20000, 'message': 'success', 'data': []}
     sentence = request.GET.get('question')
